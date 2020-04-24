@@ -1,6 +1,5 @@
 class Address(object):
-    def __init__(self, name, country, city, street, house_num, apartment, entrance, zip_code, phone):
-        self.name = name
+    def __init__(self, country="", city="", street="", house_num="", apartment="", entrance="", zip_code="", phone=""):
         self.country = country
         self.city = city
         self.street = street
