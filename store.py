@@ -1,6 +1,4 @@
-from product_list import ProductList
 from database import Database
-from product import Product
 import json
 
 
@@ -8,10 +6,10 @@ class Store(object):
     def __init__(self, name):
         self.name = name
         self.terms = ""
-        self.product_list = ProductList()
         self.categories = {}
         self.db = None
         self.config = None
+        self.product_list = []
 
     def get_categories(self):
         filter = {}
@@ -31,30 +29,36 @@ class Store(object):
         self.get_categories()
         filter = {"homepage": "1"}
         records = self.db.get_records("products", filter)
-        for sku, record in records.items():
-            product = Product(sku, record["name"], record["price"])
-            result = self.product_list.add_item(product)
+        for UID, record in records.items():
+            product = Product(record["sku"], record["name"], record["price"])
+            result = self.product_list.append(product)
 
     def search(self, search_string="", category=""):
         filter = [("sku", search_string, "="), ("name", search_string, "LIKE"), ("description", search_string, "LIKE")]
         if category != "":
             filter.append(("category", category, "="))
         records = self.db.search("products", filter)
-        search_results = ProductList()
+        search_results = []
         for sku, record in records.items():
             product = Product(sku, record["name"], record["price"])
-            search_results.add_item(product)
+            search_results.append(product)
         return search_results
 
 
     def get_by_category(self, category):
         filter = {"category": category}
         records = self.db.get_records("products", filter)
-        products_by_category = ProductList()
+        products_by_category = []
         for sku, record in records.items():
             product = Product(sku, record["name"], record["price"])
-            products_by_category.add_item(product)
+            products_by_category.append(product)
         return products_by_category
+
+    def add_user(self):
+        pass
+
+    def delete_user(self):
+        pass
 
     def add_to_cart(self, email, sku):
         filter = {"email": email, "sku": sku}
@@ -66,14 +70,15 @@ class Store(object):
     def show_cart(self, email):
         filter = {"email": email}
         records = self.db.get_records("carts", filter)
-        cart = ProductList()
+        cart = []
+        total_price = 0
         for key, record in records.items():
             filter = {"sku": record["sku"]}
             product_record = self.db.get_record("products", filter)
             product = Product(record["sku"], product_record["name"], product_record["price"])
-            cart.add_item(product)
-            cart.total_price += product_record["price"]
-        return cart
+            cart.append(product)
+            total_price += product_record["price"]
+        return (cart, total_price)
 
     def checkout(self, email):
         print("thank you for shopping")
@@ -103,11 +108,22 @@ class Store(object):
     def show_wishlist(self, email):
         filter = {"email": email}
         records = self.db.get_records("wishlist", filter)
-        wishlist = ProductList()
+        wishlist = []
         for key, record in records.items():
             filter = {"sku": record["sku"]}
             product_record = self.db.get_record("products", filter)
             product = Product(record["sku"], product_record["name"], product_record["price"])
-            wishlist.add_item(product)
-            wishlist.total_price += product_record["price"]
+            wishlist.append(product)
         return wishlist
+
+
+class Product(object):
+    def __init__(self, sku, display_name, price, discount="", description="", material="", color="", size=""):
+        self.sku = sku
+        self.name = display_name
+        self.price = price
+        self.discount = discount
+        self.description = description
+        self.material = material
+        self.color = color
+        self.size = size

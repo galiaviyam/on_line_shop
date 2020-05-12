@@ -1,15 +1,14 @@
-# This is the main file to run the shop
+# This is the main file to run the shop as a client
 from user import User
 from store import Store
-from product_list import ProductList
 import pprint
 
 
 def print_product_list(product_list):
-    if not isinstance(product_list, ProductList):
+    if not isinstance(product_list, list):
         print("cant print non product list object")
         return
-    for product in product_list.product_list:
+    for product in product_list:
         print("* " + product.name)
 
 # main
@@ -55,9 +54,10 @@ print("------------------------")
 add_to_cart = store.add_to_cart(email="gali@mail", sku="1001")
 
 # show cart
-cart = store.show_cart(email="gali@mail")
+(cart, total_price) = store.show_cart(email="gali@mail")
 print("cart:")
 print_product_list(cart)
+print("total price: " + str(total_price))
 print("------------------------")
 
 # checkout

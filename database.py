@@ -147,11 +147,6 @@ class Database(object):
             "name"	TEXT NOT NULL UNIQUE,
             "terms"	BLOB
         );""")
-        self.cursor.execute("""CREATE TABLE "sessions" (
-            "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-            "email"	TEXT NOT NULL,
-            "timestamp"	TEXT NOT NULL
-        );""")
         self.cursor.execute("""CREATE TABLE "users" (
             "name"	TEXT NOT NULL,
             "email"	TEXT NOT NULL UNIQUE,
@@ -165,6 +160,13 @@ class Database(object):
             "entrance"	TEXT,
             "zip_code"	NUMERIC NOT NULL,
             "phone"	NUMERIC NOT NULL
+        );""")
+        self.cursor.execute("""CREATE TABLE "session" (
+            "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+            "user"	TEXT NOT NULL,
+            "creation_time"	INTEGER NOT NULL,
+            "timestamp"	INTEGER NOT NULL,
+            "active"	INTEGER
         );""")
         self.connection.commit()
 
