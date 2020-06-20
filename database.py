@@ -35,11 +35,11 @@ class Database(object):
         for key, value in columns.items():
             where += "%s = \"%s\" AND " % (key, value)
         where = where[:-5]
-        set = "SET "
+        db_set = "SET "
         for key, value in new_values.items():
-            set += "%s = \"%s\", " % (key, value)
-        set = set[:-2]
-        sql = "UPDATE %s %s %s" % (table_name, set, where)
+            db_set += "%s = \"%s\", " % (key, value)
+        db_set = db_set[:-2]
+        sql = "UPDATE %s %s %s" % (table_name, db_set, where)
         with sqlite3.connect(self.dburi, uri=True) as connection:
             self.cursor = connection.cursor()
             self.cursor.execute(sql)
@@ -53,15 +53,15 @@ class Database(object):
             where += "%s = \"%s\" AND " % (key, value)
         where = where[:-5]
         sql = "SELECT * FROM %s %s" % (table_name, where)
+        results = {}
         with sqlite3.connect(self.dburi, uri=True) as connection:
             self.cursor = connection.cursor()
             self.cursor.execute(sql)
             row = self.cursor.fetchone()
-            results = {}
             if row is None:
                 return results
-            for iter in range(len(row)):
-                results[self.cursor.description[iter][0]] = row[iter]
+            for num in range(len(row)):
+                results[self.cursor.description[num][0]] = row[num]
         return results
 
     def get_records(self, table_name, columns):
@@ -78,8 +78,8 @@ class Database(object):
             uid = 0
             for row in rows:
                 result = {}
-                for iter in range(len(row)):
-                    result[self.cursor.description[iter][0]] = row[iter]
+                for num in range(len(row)):
+                    result[self.cursor.description[num][0]] = row[num]
                 results[uid] = result
                 uid += 1
         return results
@@ -104,8 +104,8 @@ class Database(object):
             uid = 0
             for row in rows:
                 result = {}
-                for iter in range(len(row)):
-                    result[self.cursor.description[iter][0]] = row[iter]
+                for num in range(len(row)):
+                    result[self.cursor.description[num][0]] = row[num]
                 results[uid] = result
                 uid += 1
         return results
@@ -137,7 +137,6 @@ class Database(object):
         if new_db is None:
             try:
                 self.dburi = 'file:{}?mode=rw'.format(pathname2url(self.db_name))
-                #self.connection = sqlite3.connect(self.dburi, uri=True)
             except sqlite3.OperationalError:
                 raise DatabaseException()
         else:
@@ -154,7 +153,8 @@ class Database(object):
                 "email"	TEXT NOT NULL,
                 "sku"	NUMERIC NOT NULL
             );""")
-        except:
+        # passing exceptions so the program will not fall when the table already exists.
+        except Exception as e:
             pass
         try:
             self.cursor.execute("""CREATE TABLE "wishlist" (
@@ -168,7 +168,6 @@ class Database(object):
             self.cursor.execute("""CREATE TABLE "categories" (
                 "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
                 "category"	TEXT NOT NULL,
-                "description"	TEXT
             );""")
         except:
             pass
@@ -195,7 +194,7 @@ class Database(object):
                 "name"	TEXT NOT NULL UNIQUE,
                 "terms"	BLOB
             );""")
-        except:
+        except Exception as e:
             pass
         try:
             self.cursor.execute("""CREATE TABLE "users" (
@@ -235,11 +234,15 @@ class Database(object):
             );""")
         except:
             pass
-        if not password:
-            password = "password"
-        db_filter = {"email": "admin@mail", "password": password, "name": "admin", "type": "admin"}
-        self.add_record("users", db_filter)
-        self.connection.commit()
+        try:
+            if not password:
+                password = "password"
+            db_filter = {"email": "admin@mail", "password": password, "name": "admin", "type": "admin"}
+            self.add_record("users", db_filter)
+            self.connection.commit()
+        except:
+            pass
+
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="db_builder")

@@ -2,7 +2,8 @@ import json
 
 
 class Product(object):
-    def __init__(self, sku, name, price, discount="", final_price="", description="", material="", color="", size="", category="", homepage=""):
+    def __init__(self, sku, name, price, discount="", final_price="", description="", material="", color="", size="",
+                 category="", homepage=""):
         self.sku = sku
         self.name = name
         self.price = price
