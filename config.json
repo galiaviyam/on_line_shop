@@ -1,0 +1,5 @@
+{
+  "store_name": "MyShop",
+  "database_name": "MyShop.db",
+  "timeout": 3600
+}
