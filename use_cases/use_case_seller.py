@@ -53,12 +53,13 @@ print("------------------------")
 
 # delete product
 print("delete product")
-product_to_delete = store.delete_product("1007")
-if product_to_delete is None:
-    print(store.error)
-else:
-    print(product_to_delete.print())
+# product_to_delete = store.delete_product("1007")
+# if product_to_delete is None:
+#     print(store.error)
+# else:
+#     print(product_to_delete.print())
 print("------------------------")
 
 # show orders
+print("orders:")
 store.show_orders()

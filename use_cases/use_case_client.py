@@ -1,4 +1,3 @@
-# This is the main file to run the shop as a client
 from user import User
 from store import Store
 
@@ -58,36 +57,36 @@ print_product_list(category)
 print("------------------------")
 
 # add to wishlist
-user.add_to_wishlist(email="client@mail", sku="1003")
-user.add_to_wishlist(email="client@mail", sku="1002")
-user.add_to_wishlist(email="client@mail", sku="1004")
-user.add_to_wishlist(email="client@mail", sku="1001")
+user.add_to_wishlist("1003")
+user.add_to_wishlist("1002")
+user.add_to_wishlist("1004")
+user.add_to_wishlist("1001")
 
 # remove from wishlist
-remove_from_wishlist = user.remove_from_wishlist(email="client@mail", sku="1001")
+remove_from_wishlist = user.remove_from_wishlist("1001")
 
 # show wishlist
-wishlist = user.show_wishlist(email="client@mail")
+wishlist = user.show_wishlist()
 print("wishlist:")
 print_product_list(wishlist)
 print("------------------------")
 
 # add to cart
-user.add_to_cart(email="client@mail", sku="1001")
-user.add_to_cart(email="client@mail", sku="1002")
-user.add_to_cart(email="client@mail", sku="1003")
+user.add_to_cart("1001")
+user.add_to_cart("1002")
+user.add_to_cart("1003")
 
 # remove from cart
-remove_from_cart = user.remove_from_cart(email="client@mail", sku="1002")
+remove_from_cart = user.remove_from_cart("1002")
 
 # show cart
-(cart, total_price) = user.show_cart(email="client@mail")
+(cart, total_price) = user.show_cart()
 print("cart:")
 print_product_list(cart)
 print("total price: " + str(total_price))
 print("------------------------")
 
 # checkout
-checkout = user.checkout("client@mail")
+checkout = user.checkout()
 
 print("exit")
