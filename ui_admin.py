@@ -87,7 +87,7 @@ def create_seller():
 
 
 if __name__ == "__main__":
-    store = Store("MyShop")
-    print("Welcome to MyShop!")
+    store = Store("config.json")
     store.get_store()
+    print("Welcome to %s!" % store.name)
     login()

@@ -3,7 +3,7 @@ from store import Store
 from user import User
 
 # main
-store = Store("MyShop")
+store = Store("config.json")
 store.get_store()
 
 # login
