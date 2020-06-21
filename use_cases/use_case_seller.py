@@ -12,7 +12,7 @@ def print_product_list(product_list):
 
 # main
 
-store = Store("MyShop")
+store = Store("config.json")
 store.get_store()
 
 #login to system

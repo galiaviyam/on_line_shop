@@ -7,8 +7,9 @@ from tabulate import tabulate
 
 
 class Store(object):
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, config_file):
+        self.config_file = config_file
+        self.name = ""
         self.terms = ""
         self.categories = {}
         self.db = None
@@ -20,7 +21,7 @@ class Store(object):
         self.user = None
 
     def get_store(self):
-        with open("config.json", "r") as file:
+        with open(self.config_file, "r") as file:
             self.config = json.load(file)
         if "timeout" in self.config:
             self.timeout = self.config["timeout"]

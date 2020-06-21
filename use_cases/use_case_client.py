@@ -11,7 +11,7 @@ def print_product_list(product_list):
 
 # main
 # get store home page
-store = Store("MyShop")
+store = Store("config.json")
 store.get_store()
 
 print("store homepage products:")
