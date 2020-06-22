@@ -35,6 +35,7 @@ def homepage():
         search_category()
     elif choice == "3":  # add product
         add_product()
+        homepage()
     elif choice == "4":  # Add category
         add_category()
         homepage()
@@ -45,6 +46,7 @@ def homepage():
             homepage()
     elif choice == "6":  # Show orders
         show_orders()
+        homepage()
     elif choice == "7":  # Exit
         print("See you next time :)")
         sys.exit()
@@ -173,11 +175,16 @@ def show_orders():
 
 def add_category():
     show_categories()
+    categories = store.get_categories()
     new_category = input("Please type new category:__")
-    store.add_category(new_category)
-    print("category added successfully")
-    show_categories()
-
+    try:
+        categories.index(new_category)
+        store.add_category(new_category)
+        print("category added successfully")
+        show_categories()
+    except ValueError:
+        if new_category:
+            print("Category '%s' already exist!" % new_category)
 
 
 if __name__ == "__main__":

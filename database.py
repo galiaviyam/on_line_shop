@@ -166,8 +166,9 @@ class Database(object):
             pass
         try:
             self.cursor.execute("""CREATE TABLE "categories" (
-                "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-                "category"	TEXT NOT NULL,
+                "id"	INTEGER NOT NULL UNIQUE,
+                "category"	TEXT NOT NULL UNIQUE,
+                PRIMARY KEY("id")
             );""")
         except:
             pass
