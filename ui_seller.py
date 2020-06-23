@@ -26,33 +26,38 @@ def login(attempt=1):
 
 
 def homepage():
+    show_products(store.product_list)
+    actions()
+
+
+def actions():
     choice = input("What would you like to do? Please type the number:\n1. Search\n2. Go to category\n3. Add product\n"
                    "4. Add category\n5. Show one product\n6. Show orders\n7. Exit\n--->")
     if choice == "1":  # search
         search()
-        homepage()
+        actions()
     elif choice == "2":  # Go to category
         search_category()
     elif choice == "3":  # add product
         add_product()
-        homepage()
+        actions()
     elif choice == "4":  # Add category
         add_category()
-        homepage()
+        actions()
     elif choice == "5":  # Show one product
         sku = input("sku:__")
         if show_one_product(sku) == 1:
             print("A product with SKU %s does not exist" % sku)
-            homepage()
+            actions()
     elif choice == "6":  # Show orders
         show_orders()
-        homepage()
+        actions()
     elif choice == "7":  # Exit
         print("See you next time :)")
         sys.exit()
     else:
         print("Please enter a valid choice")
-        homepage()
+        actions()
 
 
 def search():
@@ -73,7 +78,7 @@ def search_category():
     choice = input("Please type category--->")
     category = store.get_by_category(category=choice)
     show_products(category)
-    homepage()
+    actions()
 
 
 def add_product():
@@ -116,13 +121,13 @@ def show_products(product_list):
         print("")
     else:
         print("list is empty")
-        homepage()
+        actions()
 
 
 def show_one_product(sku):
     db_filter = {"sku": sku}
     result = store.db.get_record("products", db_filter)
-    if sku not in result:
+    if int(sku) not in result.values():
         return 1
     headers = ["sku", "name", "price", "discount %", "final_price", "description", "material", "color", "size"]
     table = [[str(result["sku"]), result["name"], str(result["price"]), str(result["discount"]),
@@ -134,7 +139,7 @@ def show_one_product(sku):
         modify_product(sku)
     elif choice == "2":  # delete product
         delete_product(sku)
-        homepage()
+        actions()
     elif choice == "3":  # return to homepage
         homepage()
     else:
@@ -170,7 +175,7 @@ def delete_product(sku):
 def show_orders():
     print("orders:")
     store.show_orders()
-    homepage()
+    actions()
 
 
 def add_category():
