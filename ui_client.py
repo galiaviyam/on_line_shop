@@ -20,7 +20,9 @@ def actions():
         search_category()
     elif choice == "4":  # Show one product
         sku = input("sku:__")
-        show_one_product(sku)
+        if show_one_product(sku) == 1:
+            print("A product with SKU %s does not exist" % sku)
+            actions()
     elif choice == "5":  # show cart
         show_cart()
     elif choice == "6":  # show wishlist:
@@ -95,7 +97,9 @@ def products_actions():
                    "2. return to homepage\n--->")
     if choice == "1":  # show one product
         sku = input("Please enter sku:__")
-        show_one_product(sku)
+        if show_one_product(sku) == 1:
+            print("A product with SKU %s does not exist" % sku)
+            products_actions()
     elif choice == "2":  # return to homepage
         homepage()
     else:
@@ -160,6 +164,8 @@ def show_wishlist():
 def show_one_product(sku):
     db_filter = {"sku": sku}
     result = store.db.get_record("products", db_filter)
+    if int(sku) not in result.values():
+        return 1
     headers = ["sku", "name", "price", "discount %", "final_price", "description", "material", "color", "size"]
     table = [[str(result["sku"]), result["name"], str(result["price"]), str(result["discount"]),
               str(result["final_price"]), result["description"], result["material"], result["color"], result["size"]]]
@@ -180,7 +186,8 @@ def show_one_product(sku):
         homepage()
     else:
         print("Please enter a valid choice")
-        show_one_product(sku)
+        if show_one_product(sku) == 1:
+            print("A product with SKU %s does not exist" % sku)
 
 
 def login(attempt=1):
