@@ -34,6 +34,9 @@ class Store(object):
         self.name = record["name"]
         self.terms = record["terms"]
         self.get_categories()
+        self.update_homepage()
+
+    def update_homepage(self):
         db_filter = {"homepage": "1"}
         records = self.db.get_records("products", db_filter)
         for UID, record in records.items():

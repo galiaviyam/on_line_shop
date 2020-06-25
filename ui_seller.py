@@ -27,6 +27,7 @@ def login(attempt=1):
 
 
 def homepage():
+    store.update_homepage()
     show_products(store.product_list)
     actions()
 
@@ -100,7 +101,7 @@ def add_product():
     show_categories()
     category = input("category:__")
     is_homepage = input("Do you want this product to appear on homepage?(yes or no):__")
-    if is_homepage == "yes":
+    if is_homepage.strip() == "yes":
         is_homepage = 1
     else:
         is_homepage = 0
@@ -161,6 +162,10 @@ def modify_product(sku):
         price = input("discount:__")
     description = input("description:__")
     is_homepage = input("Do you want this product to appear on homepage?(yes or no):__")
+    if is_homepage.strip() == "yes":
+        is_homepage = 1
+    else:
+        is_homepage = 0
     action = store.modify_product(sku, name=name, price=price, discount=discount, description=description,
                                   homepage=is_homepage)
     if action:

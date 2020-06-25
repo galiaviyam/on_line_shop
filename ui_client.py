@@ -5,6 +5,7 @@ import sys
 
 
 def homepage():
+    store.update_homepage()
     show_products(store.product_list, "home")
     actions()
 
