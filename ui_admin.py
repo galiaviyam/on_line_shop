@@ -21,8 +21,9 @@ def login(attempt=1):
             print("welcome %s" % store.user.name)
             homepage()
         else:
+            attempt += 1
             print("You do not have permission")
-            sys.exit(1)
+            login(attempt)
 
 
 def homepage():

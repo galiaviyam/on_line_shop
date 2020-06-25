@@ -21,8 +21,9 @@ def login(attempt=1):
             print("welcome %s" % store.user.name)
             homepage()
         else:
+            attempt += 1
             print("You do not have permission")
-            sys.exit(1)
+            login(attempt)
 
 
 def homepage():
@@ -151,7 +152,7 @@ def show_one_product(sku):
 def modify_product(sku):
     name = input("name:__")
     price = input("price:__")
-    while not price.isnumeric():
+    while not price.isnumeric() and price != "":
         print("Price must be a number!")
         price = input("price:__")
     discount = input("discount:__")

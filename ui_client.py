@@ -133,7 +133,7 @@ def checkout():
         print("Thank you for shopping")
     elif checkout_result == 2:
         print("Please log in")
-        login()
+        user_actions()
     elif checkout_result == 1:
         print("There was an error")
 
