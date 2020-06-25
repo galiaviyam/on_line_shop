@@ -21,11 +21,13 @@ def login(attempt=1):
             print("welcome %s" % store.user.name)
             homepage()
         else:
+            attempt += 1
             print("You do not have permission")
-            sys.exit(1)
+            login(attempt)
 
 
 def homepage():
+    store.update_homepage()
     show_products(store.product_list)
     actions()
 
@@ -99,7 +101,7 @@ def add_product():
     show_categories()
     category = input("category:__")
     is_homepage = input("Do you want this product to appear on homepage?(yes or no):__")
-    if is_homepage == "yes":
+    if is_homepage.strip() == "yes":
         is_homepage = 1
     else:
         is_homepage = 0
@@ -151,7 +153,7 @@ def show_one_product(sku):
 def modify_product(sku):
     name = input("name:__")
     price = input("price:__")
-    while not price.isnumeric():
+    while not price.isnumeric() and price != "":
         print("Price must be a number!")
         price = input("price:__")
     discount = input("discount:__")
@@ -160,6 +162,10 @@ def modify_product(sku):
         price = input("discount:__")
     description = input("description:__")
     is_homepage = input("Do you want this product to appear on homepage?(yes or no):__")
+    if is_homepage.strip() == "yes":
+        is_homepage = 1
+    else:
+        is_homepage = 0
     action = store.modify_product(sku, name=name, price=price, discount=discount, description=description,
                                   homepage=is_homepage)
     if action:
