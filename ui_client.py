@@ -11,9 +11,9 @@ def homepage():
 
 
 def actions():
-    choice = input("What would you like to do? Please type the number:\n1. Log in or sign in\n2. Search\n"
+    choice = input("What would you like to do? Please type the number:\n1. Log in or sign up\n2. Search\n"
                    "3. Go to category\n4. Show one product\n5. Show cart\n6. Show wishlist\n7. Exit\n--->")
-    if choice == "1":  # Log in or sign in
+    if choice == "1":  # Log in or sign up
         user_actions()
     elif choice == "2":  # Search
         search()
@@ -37,20 +37,13 @@ def actions():
 
 
 def user_actions():
-    choice = input("What would you like to do? Please type the number:\n1. Log in\n2. sign in\n"
-                   "3. change password\n4. return to homepage--->")
+    choice = input("What would you like to do? Please type the number:\n1. Log in\n2. sign up\n"
+                   "3. return to homepage--->")
     if choice == "1":  # log in
         login()
-    elif choice == "2":  # sign in
+    elif choice == "2":  # sign up
         new_user()
-    elif choice == "3":  # change password
-        email = input("please enter your email: ")
-        old_password = input("please enter your old password: ")
-        new_password = input("please enter your new password: ")
-        if store.user.change_password(email, old_password, new_password):
-            print("password changed successfully! please log in:")
-            login()
-    elif choice == "4":  # return to homepage
+    elif choice == "3":  # return to homepage
         homepage()
     else:
         print("Please enter a valid choice")
@@ -200,7 +193,7 @@ def login(attempt=1):
     password = input("password:--->")
     if not store.user.login(email, password):
         attempt += 1
-        print("password is incorrect")
+        print("password or username is incorrect")
         login(attempt)
     else:
         print("welcome %s" % store.user.name)
@@ -232,6 +225,6 @@ def new_user():
 if __name__ == "__main__":
     store = Store("config.json")
     store.get_store()
-    print("Welcome to %s!" % store.name)
+    print("\n----------------- Welcome to %s! -----------------\n" % store.name)
     homepage()
 
